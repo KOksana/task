@@ -1,0 +1,75 @@
+CREATE DATABASE my_db;
+
+CREATE TABLE Customers(
+CustomerID int,
+Name varchar(255),
+City varchar(255),
+PRIMARY KEY (CustomerID)
+);
+CREATE TABLE Products(
+ProductID int,
+Name varchar(255),
+City varchar(255),
+PRIMARY KEY (ProductID)
+);
+CREATE TABLE Supplys(
+SupplyID int,
+CustomerID int,
+ProductID int,
+PRIMARY KEY (SupplyID),
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+INSERT INTO Customers
+VALUES('1', 'Vasia', 'London');
+INSERT INTO Customers
+Values('2', 'Petia', 'London');
+INSERT INTO Customers
+Values('3', 'Ivan', 'Paris');
+INSERT INTO Customers
+Values('4', 'Vasia', 'Kiev');
+
+INSERT INTO Products
+VALUES('1', 'Prod1', 'London');
+INSERT INTO Products
+VALUES('2', 'Prod2', 'Paris');
+INSERT INTO Products
+VALUES('3', 'Prod1', 'Kiev');
+INSERT INTO Products
+VALUES('4', 'Prod3', 'Berlin');
+INSERT INTO Products
+VALUES('5', 'Prod3', 'Paris');
+
+INSERT INTO Supplys
+VALUES('1', '2', '1');
+INSERT INTO Supplys
+VALUES('2', '4', '3');
+INSERT INTO Supplys
+VALUES('3', '4', '3');
+INSERT INTO Supplys
+VALUES('4', '3', '5');
+INSERT INTO Supplys
+VALUES('5', '1', '5');
+INSERT INTO Supplys
+VALUES('6', '3', '1');
+INSERT INTO Supplys
+VALUES('7', '3', '2');
+
+SELECT * 
+FROM Customers
+WHERE City='London';
+
+SELECT Name, SupplyID
+FROM Customers INNER JOIN Supplys 
+    ON Customers.CustomerID=Supplys.CustomerID
+WHERE Supplys.ProductID IN 
+            (SELECT ProductID
+             FROM Products
+             WHERE Products.City='Paris');
+
+SELECT COUNT(*) AS NumberOfCustomers FROM Customers;
+
+SELECT COUNT(*) AS NumberOfProducts FROM Products;
+
+SELECT COUNT(*) AS NumberOfSupplys FROM Supplys;
